@@ -3,14 +3,14 @@ import crm from '../lib/crm';
 import { template, emailAPI } from '../lib/email';
 import type { Item } from '../lib/queue.js';
 
-export interface HandlerEntry {
+export interface HandlerEntry<T> {
   event: Item;
-  step: StepFunction;
+  step: StepFunction<T>;
 }
 
-export type StepFunction = <T>(id: string, callback: () => Promise<T>) => Promise<T>;
+export type StepFunction<T> = (id: string, callback: () => Promise<T>) => Promise<T>;
 
-export async function handler({ event, step }: HandlerEntry): Promise<void> {
+export async function handler({ event, step }: HandlerEntry<{ chat: string; }>): Promise<void> {
   const { user, signupSurvey } = event.data;
 
   const personalizedMessage = await step('generate-msg', async () => {
