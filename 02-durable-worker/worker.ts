@@ -7,6 +7,10 @@ const POLL_INTERVAL = 1_000; // ms
 const queue = new QueueClient();
 
 export async function worker() {
+  /*
+   * HINT: Memoized state should exist outside of the loop
+   */
+
   while (true) {
     const event = await queue.dequeue().catch((err) => {
       logger.error(`Failed to fetch from queue: ${err}`);
