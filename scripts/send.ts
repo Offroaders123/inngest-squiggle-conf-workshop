@@ -1,9 +1,9 @@
-import { QueueClient } from '../lib/queue';
+import { type Item, QueueClient } from '../lib/queue';
 import { createId } from '../lib/ids';
 
 const queue = new QueueClient();
 
-const item = {
+const item: Item = {
   name: 'user.signup',
   data: {
     user: {

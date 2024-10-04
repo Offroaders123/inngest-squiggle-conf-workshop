@@ -1,6 +1,6 @@
 import { QueueClient } from '../lib/queue';
 import { logger } from '../lib/logger';
-import { handler } from './handler';
+import { handler, StepFunction } from './handler';
 
 const POLL_INTERVAL = 1_000; // ms
 
@@ -16,7 +16,7 @@ export async function worker() {
     if (event) {
       logger.info(`Processing queue item:`, event.id);
 
-      function step(id, callback) {
+      const step: StepFunction = (id, callback) => {
         // Your code will go here!
         return callback();
       }

@@ -1,9 +1,25 @@
 import { createId } from './ids';
 
+export interface Item {
+  id?: string;
+  name: string;
+  data: {
+    user: {
+      id: string;
+      name: string;
+      company: string;
+    };
+    signupSurvey: {
+      teamSize: string;
+      industry: string;
+    };
+  };
+}
+
 export class QueueClient {
   baseURL = 'http://localhost:4040';
 
-  async enqueue(item: any): Promise<void> {
+  async enqueue(item: Item): Promise<void> {
     // Append ID if not a job that is requeued
     if (!item.id) {
       item.id = createId();
@@ -20,12 +36,12 @@ export class QueueClient {
     // const json = await response.json();
   }
 
-  async dequeue(): Promise<any | undefined> {
+  async dequeue(): Promise<Item | undefined> {
     const url = new URL('/dequeue', this.baseURL);
     const response = await fetch(url, {
       method: 'POST',
     });
     const json = await response.json();
-    return json?.item;
+    return json?.item as Item;
   }
 }
